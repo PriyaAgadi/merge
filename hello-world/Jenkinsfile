@@ -1,29 +1,36 @@
-pipeline{
-    agent any
-    environment {
-        PATH = "$PATH:/opt/apache-maven-3.8.2/bin"
+properties([pipelineTriggers([githubPush()])])
+ 
+pipeline {
+    /* specify nodes for executing */
+    agent {
+        label 'github-ci'
     }
-    stages{
-       stage('GetCode'){
-            steps{
-                git 'https://github.com/PriyaAgadi/merge.git'
+ 
+    stages {
+        /* checkout repo */
+        stage('Checkout SCM') {
+            steps {
+                checkout([
+                 $class: 'GitSCM',
+                 branches: [[name: 'master']],
+                 userRemoteConfigs: [[
+                    url: 'git@github.com:PriyaAgadi/merge.git',
+                    credentialsId: '',
+                 ]]
+                ])
             }
-         }        
-       stage('Build'){
-            steps{
-                sh 'mvn clean package'
+        }
+         stage('Do the deployment') {
+            steps {
+                echo ">> Run deploy applications "
             }
-         }
-        stage('SonarQube analysis') {
-//    def scannerHome = tool 'SonarScanner 4.0';
-        steps{
-        withSonarQubeEnv('sonarqube-8.9') { 
-        // If you have configured more than one global server connection, you can specify its name
-//      sh "${scannerHome}/bin/sonar-scanner"
-        sh "mvn sonar:sonar"
-    }
         }
-        }
-       
     }
+ 
+    /* Cleanup workspace */
+    post {
+       always {
+           deleteDir()
+       }
+   }
 }
