@@ -1,36 +1,15 @@
-properties([pipelineTriggers([githubPush()])])
- 
 pipeline {
-    /* specify nodes for executing */
-    agent {
-        label 'github-ci'
-    }
- 
+    agent any
     stages {
-        /* checkout repo */
-        stage('Checkout SCM') {
+        stage('Build') {
             steps {
-                checkout([
-                 $class: 'GitSCM',
-                 branches: [[name: 'master']],
-                 userRemoteConfigs: [[
-                    url: 'git@github.com:PriyaAgadi/merge.git',
-                    credentialsId: '',
-                 ]]
-                ])
-            }
-        }
-         stage('Do the deployment') {
-            steps {
-                echo ">> Run deploy applications "
+                // Get some code from a GitHub repository
+                git url: 'https://github.com/PriyaAgadi/merge.git', branch: 'master'
+                // Change file permisson
+                sh "chmod +x -R ./jenkins"
+                // Run shell script
+                sh "./jenkins/script/scripted_pipeline_ex_2.sh"
             }
         }
     }
- 
-    /* Cleanup workspace */
-    post {
-       always {
-           deleteDir()
-       }
-   }
 }
