@@ -11,7 +11,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties> -->
     <properties>
-    <sonar.host.url>localhost:4950</sonar.host.url>
+    <sonar.host.url>localhost:9000</sonar.host.url>
     <sonar.log.level>DEBUG</sonar.log.level>
     <sonar.verbose>true</sonar.verbose>
     <sonar.coverage.exclusions>**/*.js</sonar.coverage.exclusions>
