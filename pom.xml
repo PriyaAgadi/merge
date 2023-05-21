@@ -6,10 +6,16 @@
     <artifactId>merge-project</artifactId>
     <version>1.0.0</version>
     
-    <properties>
+<!--     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
+    </properties> -->
+    <properties>
+    <sonar.host.url>localhost:4950</sonar.host.url>
+    <sonar.log.level>DEBUG</sonar.log.level>
+    <sonar.verbose>true</sonar.verbose>
+    <sonar.coverage.exclusions>**/*.js</sonar.coverage.exclusions>
+</properties>
     
     <build>
         <plugins>
